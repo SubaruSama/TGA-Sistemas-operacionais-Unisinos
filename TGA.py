@@ -8,6 +8,13 @@ Definicao TGA:
     Uso da cpu deve ser compartilhado em: 80% para I/O Bound e 20% para CPU Bound
 '''
 
+'''
+.pop() pode ser atribuido a uma variavel
+exemplo: frutas['pera', 'maracuja', 'morango']
+ultimo = frutas.pop()
+print ultimo # ira sair morango
+'''
+
 import os
 
 # Limpando a tela
@@ -18,12 +25,16 @@ else:
 
 fila_IO = list()
 fila_CPU = list()
+fila_quantum = list()
 numero_processos = 0
 
 def processamento_fila(nomeProcesso, quantum, tipoProcesso):
     '''
         Testing
     '''
+
+    fila_quantum.append(quantum)
+
     # Tipo Processo:
     # I = I/O Bound
     # C = CPU bound
@@ -37,6 +48,7 @@ def processamento_fila(nomeProcesso, quantum, tipoProcesso):
     print('FUNC: %s %s %s') % (nomeProcesso, quantum, tipoProcesso)
     print("FIla IO: {}".format(fila_IO))
     print("Fila CPU: {}".format(fila_CPU))
+    print("Fila quantum: {}".format(fila_quantum))
     return
 
 filaProcessos = list() # Criacao da fila vazia
