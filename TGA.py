@@ -27,32 +27,71 @@ if os.name == 'nt':
 else:
     os.system('clear')
 
-fila_IO = list() # fila de nomes dos nomes de bound tipo IO
-fila_quantum_IO = list() # fila de quantum dos processos de bound tipo IO
-fila_CPU = list() # fila de quantum dos nomes de bound tipo CPU
-fila_quantum_CPU = list() # fila de quantum dos processos de bound tipo CPU
+fila_IO_nome = [] # fila de nomes dos nomes de bound tipo IO
+fila_quantum_IO = [] # fila de quantum dos processos de bound tipo IO
+fila_CPU_nome = [] # fila de quantum dos nomes de bound tipo CPU
+fila_quantum_CPU = [] # fila de quantum dos processos de bound tipo CPU
+fila_tipo_processo = []
 quantum_IO, quantum_CPU = 100, 200
 
-def processamento_fila(nomeProcesso, quantum, tipoProcesso):
-    '''
-        Testing
-    '''
+def preencher_fila(nomeProcesso, quantum, tipoProcesso):
+
+    '''Essa funcao esta errada. Modificar essa funcao para que encha a fila. Criar uma funcao que processe o conteudo das filas'''
 
     # Tipo Processo:
     # I = I/O Bound
     # C = CPU bound
-    if tipoProcesso == 'I' or tipoProcesso.lower() == 'i': # THE EVIL IS LAUGHING AT ME; sem o metodo lower(), nao entra certo nas filas. com o metodo lower(), entra. vai saber...
-        fila_IO.append(nomeProcesso)
+    if tipoProcesso.upper() == 'I' or tipoProcesso.lower() == 'i': # THE EVIL IS LAUGHING AT ME; sem o metodo lower(), nao entra certo nas filas. com o metodo lower(), entra. vai saber...
+        fila_IO_nome.append(nomeProcesso)
         fila_quantum_IO.append(quantum)
-    elif tipoProcesso == 'C' or tipoProcesso.lower() == 'c': # THE EVIL IS LAUGHING AT ME; sem o metodo lower(), nao entra certo nas filas. com o metodo lower(), entra. vai saber...
-        fila_CPU.append(nomeProcesso)
+        fila_tipo_processo.append(tipoProcesso.upper())
+    elif tipoProcesso.upper() == 'C' or tipoProcesso.lower() == 'c': # THE EVIL IS LAUGHING AT ME; sem o metodo lower(), nao entra certo nas filas. com o metodo lower(), entra. vai saber...
+        fila_CPU_nome.append(nomeProcesso)
         fila_quantum_CPU.append(quantum)
+        fila_tipo_processo.append(tipoProcesso.upper())
     else:
         print("Bound desconhecido")
 
-    print("FIla IO: {} Fila IO quantum: {}".format(fila_IO, fila_quantum_IO))
-    print("Fila CPU: {} Fila CPU quantum: {}".format(fila_CPU, fila_quantum_CPU))
+    print("\nFIla IO: {}\t Fila IO quantum: {}\n".format(fila_IO_nome, fila_quantum_IO))
+    print("\nFila CPU: {}\t Fila CPU quantum: {}\n".format(fila_CPU_nome, fila_quantum_CPU))
+    print("\nFila TIpo de Processo: {}\n".format(fila_tipo_processo))
+
+    temp = fila_tipo_processo.pop()
+    if temp == 'I':
+        processar_fila(fila_IO_nome, fila_quantum_IO, quantum_IO)
+    elif temp == 'C':
+        processar_fila(fila_CPU_nome, fila_quantum_CPU, quantum_CPU)
     return
+
+def processar_fila(*args):
+    '''essa funcao recebe como argumento uma lista com um tamanho variavel de argumentos. 
+        esta sendo passado listas (arrays) como argumentos. args eh uma lista que possue diversas posicoes, sendo que cada posicao possui um valor'''
+
+    '''para poder passar uma lista como argumento, tem que usar o '*' quando estiver passando para a funcao. Exemplo: 
+    def someFunction(*args):
+        for x in args:
+            print x
+
+    eh o mesmo que: 
+    def someFunction(myList = [], *args):
+        for x in myList:
+            print x
+
+    thanks stackoverflow'''
+
+    fila_de_espera = []
+    processar_nome_fila = args[0]
+    # POG = Programacao orientada a gambiarra CUIDADO NAO TOCAR
+    temp = args[1]
+    processar_quantum_processo_temp = map(int, temp)
+    processar_quantum_processo = processar_quantum_processo_temp[0]
+    # POG = Programacao orientada a gambiarra CUIDADO NAO TOCAR
+    processar_quantum_max = args[2]
+
+    # Se eu pegar todos os quantum dos processos e fazer a media?
+
+    print("Nome processo: {}\nQuantum fila: {}\nQuantum max: {}\nDict espera: {}".format(processar_nome_fila, processar_quantum_processo, processar_quantum_max, fila_de_espera))
+    # Cada vez que essa funcao for chamada, limpar o conteudo dela mas tem como guardar as variaveis temporarias?
 
 while True:
     print("Devera seguir a ordem: Nome do processo,Quantum,Tipo do processo")
@@ -64,6 +103,6 @@ while True:
         quantum_processo = splitted_processos[1]
         tipo_processo = splitted_processos[2]
 
-        processamento_fila(nome_processo, quantum_processo, tipo_processo)
+        preencher_fila(nome_processo, quantum_processo, tipo_processo)
     else:
         print("Exiting. Bye...")
